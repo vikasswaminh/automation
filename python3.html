@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Automation Labs with Python</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+        .code-block {
+            background-color: #f0f4f8;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+        }
+        .lab-card {
+            background-color: white;
+            border-left: 4px solid #4F46E5;
+        }
+        .lab-header {
+            background-color: #4F46E5;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+        .lab-body {
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8 text-indigo-600">Network Automation Labs with Python</h1>
+
+        <!-- Lab 1 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 1: Connecting to a Cisco Device</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to connect to a Cisco device using Python and the <code>netmiko</code> library.</p>
+                <div class="code-block">
+                    <pre><code>from netmiko import ConnectHandler
+
+cisco_device = {
+    'device_type': 'cisco_ios',
+    'ip': '192.168.1.1',
+    'username': 'admin',
+    'password': 'password',
+}
+
+connection = ConnectHandler(**cisco_device)
+print("Successfully connected to the device")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 2 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 2: Running a Simple Command</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to send a command to a Cisco device and receive the output.</p>
+                <div class="code-block">
+                    <pre><code>output = connection.send_command('show ip interface brief')
+print(output)</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 3 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 3: Configuring an Interface</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to send configuration commands to a Cisco device.</p>
+                <div class="code-block">
+                    <pre><code>config_commands = [
+    'interface GigabitEthernet0/1',
+    'description Configured by Python script',
+    'ip address 192.168.2.1 255.255.255.0',
+    'no shutdown'
+]
+connection.send_config_set(config_commands)</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 4 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 4: Saving Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to save the running configuration to the startup configuration.</p>
+                <div class="code-block">
+                    <pre><code>connection.send_command('write memory')
+print("Configuration saved!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 5 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 5: Gathering Device Facts</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to gather and display basic device information.</p>
+                <div class="code-block">
+                    <pre><code>device_facts = connection.send_command('show version')
+print(device_facts)</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 6 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 6: Looping Through Multiple Devices</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to connect to multiple devices and run commands in a loop.</p>
+                <div class="code-block">
+                    <pre><code>devices = [
+    {
+        'device_type': 'cisco_ios',
+        'ip': '192.168.1.1',
+        'username': 'admin',
+        'password': 'password',
+    },
+    {
+        'device_type': 'cisco_ios',
+        'ip': '192.168.1.2',
+        'username': 'admin',
+        'password': 'password',
+    }
+]
+
+for device in devices:
+    connection = ConnectHandler(**device)
+    output = connection.send_command('show ip interface brief')
+    print(f"Device {device['ip']}:\n{output}")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 7 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 7: Backing Up Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to back up the running configuration of a device.</p>
+                <div class="code-block">
+                    <pre><code>backup = connection.send_command('show running-config')
+with open(f"backup_{device['ip']}.txt", 'w') as backup_file:
+    backup_file.write(backup)
+print("Configuration backup saved!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 8 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 8: Automating VLAN Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate VLAN configuration on a Cisco switch.</p>
+                <div class="code-block">
+                    <pre><code>vlans = [10, 20, 30]
+for vlan in vlans:
+    config_commands = [
+        f'vlan {vlan}',
+        f'name VLAN_{vlan}'
+    ]
+    connection.send_config_set(config_commands)
+print("VLANs configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 9 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 9: Automating ACL Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate Access Control List (ACL) configuration on a Cisco router.</p>
+                <div class="code-block">
+                    <pre><code>acl_commands = [
+    'ip access-list standard TEST_ACL',
+    'permit 192.168.1.0 0.0.0.255',
+    'deny any'
+]
+connection.send_config_set(acl_commands)
+print("ACL configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 10 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 10: Automating BGP Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate BGP configuration on a Cisco router.</p>
+                <div class="code-block">
+                    <pre><code>bgp_commands = [
+    'router bgp 65001',
+    'neighbor 192.168.2.2 remote-as 65002',
+    'network 192.168.1.0 mask 255.255.255.0'
+]
+connection.send_config_set(bgp_commands)
+print("BGP configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 11 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 11: Automating OSPF Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate OSPF configuration on a Cisco router.</p>
+                <div class="code-block">
+                    <pre><code>ospf_commands = [
+    'router ospf 1',
+    'network 192.168.1.0 0.0.0.255 area 0'
+]
+connection.send_config_set(ospf_commands)
+print("OSPF configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 12 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 12: Automating EIGRP Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate EIGRP configuration on a Cisco router.</p>
+                <div class="code-block">
+                    <pre><code>eigrp_commands = [
+    'router eigrp 100',
+    'network 192.168.1.0'
+]
+connection.send_config_set(eigrp_commands)
+print("EIGRP configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 13 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 13: Automating SNMP Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate SNMP configuration on a Cisco device.</p>
+                <div class="code-block">
+                    <pre><code>snmp_commands = [
+    'snmp-server community public RO',
+    'snmp-server location "Data Center"',
+    'snmp-server contact admin@example.com'
+]
+connection.send_config_set(snmp_commands)
+print("SNMP configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 14 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 14: Automating Syslog Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate Syslog configuration on a Cisco device.</p>
+                <div class="code-block">
+                    <pre><code>syslog_commands = [
+    'logging 192.168.1.100',
+    'logging trap informational'
+]
+connection.send_config_set(syslog_commands)
+print("Syslog configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 15 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 15: Automating NTP Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate NTP configuration on a Cisco device.</p>
+                <div class="code-block">
+                    <pre><code>ntp_commands = [
+    'ntp server 192.168.1.200',
+    'ntp update-calendar'
+]
+connection.send_config_set(ntp_commands)
+print("NTP configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 16 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 16: Automating Interface Description</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate setting interface descriptions on a Cisco switch.</p>
+                <div class="code-block">
+                    <pre><code>interface_descriptions = [
+    'interface GigabitEthernet0/1',
+    'description Link to Router',
+    'interface GigabitEthernet0/2',
+    'description Link to Switch'
+]
+connection.send_config_set(interface_descriptions)
+print("Interface descriptions set successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 17 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 17: Automating Password Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate setting passwords on a Cisco device.</p>
+                <div class="code-block">
+                    <pre><code>password_commands = [
+    'enable secret cisco123',
+    'username admin privilege 15 secret admin123'
+]
+connection.send_config_set(password_commands)
+print("Passwords configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 18 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 18: Automating Logging Buffer Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate setting the logging buffer size on a Cisco device.</p>
+                <div class="code-block">
+                    <pre><code>logging_buffer_commands = [
+    'logging buffered 16384'
+]
+connection.send_config_set(logging_buffer_commands)
+print("Logging buffer configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 19 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 19: Automating Banner Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate setting banners on a Cisco device.</p>
+                <div class="code-block">
+                    <pre><code>banner_commands = [
+    'banner motd #Unauthorized access is prohibited#'
+]
+connection.send_config_set(banner_commands)
+print("Banner configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 20 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 20: Automating Interface Speed and Duplex Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate setting interface speed and duplex on a Cisco switch.</p>
+                <div class="code-block">
+                    <pre><code>speed_duplex_commands = [
+    'interface GigabitEthernet0/1',
+    'speed 100',
+    'duplex full'
+]
+connection.send_config_set(speed_duplex_commands)
+print("Interface speed and duplex configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 21 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 21: Automating DHCP Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate DHCP configuration on a Cisco router.</p>
+                <div class="code-block">
+                    <pre><code>dhcp_commands = [
+    'ip dhcp pool MY_POOL',
+    'network 192.168.1.0 255.255.255.0',
+    'default-router 192.168.1.1',
+    'dns-server 8.8.8.8'
+]
+connection.send_config_set(dhcp_commands)
+print("DHCP configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 22 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 22: Automating Interface Shutdown</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate shutting down interfaces on a Cisco switch.</p>
+                <div class="code-block">
+                    <pre><code>shutdown_commands = [
+    'interface GigabitEthernet0/1',
+    'shutdown'
+]
+connection.send_config_set(shutdown_commands)
+print("Interface shut down successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 23 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 23: Automating Interface Switchport Mode Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate setting switchport mode on a Cisco switch.</p>
+                <div class="code-block">
+                    <pre><code>switchport_mode_commands = [
+    'interface GigabitEthernet0/1',
+    'switchport mode access'
+]
+connection.send_config_set(switchport_mode_commands)
+print("Switchport mode configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 24 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 24: Automating Interface Switchport Access VLAN Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate setting switchport access VLAN on a Cisco switch.</p>
+                <div class="code-block">
+                    <pre><code>switchport_vlan_commands = [
+    'interface GigabitEthernet0/1',
+    'switchport access vlan 10'
+]
+connection.send_config_set(switchport_vlan_commands)
+print("Switchport access VLAN configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 25 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 25: Automating Spanning Tree Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate Spanning Tree Protocol (STP) configuration on a Cisco switch.</p>
+                <div class="code-block">
+                    <pre><code>stp_commands = [
+    'spanning-tree mode rapid-pvst',
+    'spanning-tree vlan 1-4094 priority 4096'
+]
+connection.send_config_set(stp_commands)
+print("Spanning Tree Protocol configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 26 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 26: Automating Port Security Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate port security configuration on a Cisco switch.</p>
+                <div class="code-block">
+                    <pre><code>port_security_commands = [
+    'interface GigabitEthernet0/1',
+    'switchport port-security',
+    'switchport port-security maximum 2',
+    'switchport port-security violation restrict',
+    'switchport port-security mac-address sticky'
+]
+connection.send_config_set(port_security_commands)
+print("Port security configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 27 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 27: Automating HSRP Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate Hot Standby Router Protocol (HSRP) configuration on a Cisco router.</p>
+                <div class="code-block">
+                    <pre><code>hsrp_commands = [
+    'interface GigabitEthernet0/1',
+    'standby 1 ip 192.168.1.254',
+    'standby 1 priority 110',
+    'standby 1 preempt'
+]
+connection.send_config_set(hsrp_commands)
+print("HSRP configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 28 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 28: Automating VRRP Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate Virtual Router Redundancy Protocol (VRRP) configuration on a Cisco router.</p>
+                <div class="code-block">
+                    <pre><code>vrrp_commands = [
+    'interface GigabitEthernet0/1',
+    'vrrp 1 ip 192.168.1.254',
+    'vrrp 1 priority 110',
+    'vrrp 1 preempt'
+]
+connection.send_config_set(vrrp_commands)
+print("VRRP configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 29 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 29: Automating GLBP Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate Gateway Load Balancing Protocol (GLBP) configuration on a Cisco router.</p>
+                <div class="code-block">
+                    <pre><code>glbp_commands = [
+    'interface GigabitEthernet0/1',
+    'glbp 1 ip 192.168.1.254',
+    'glbp 1 priority 110',
+    'glbp 1 preempt'
+]
+connection.send_config_set(glbp_commands)
+print("GLBP configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab 30 -->
+        <div class="lab-card shadow-md rounded-lg mb-6">
+            <div class="lab-header">
+                <h2 class="text-2xl font-semibold">Lab 30: Automating QoS Configuration</h2>
+            </div>
+            <div class="lab-body">
+                <p class="mb-4"><strong>Objective:</strong> Learn to automate Quality of Service (QoS) configuration on a Cisco device.</p>
+                <div class="code-block">
+                    <pre><code>qos_commands = [
+    'class-map match-any VOIP',
+    'match ip dscp ef',
+    'policy-map QOS_POLICY',
+    'class VOIP',
+    'priority percent 70',
+    'class class-default',
+    'fair-queue',
+    'interface GigabitEthernet0/1',
+    'service-policy output QOS_POLICY'
+]
+connection.send_config_set(qos_commands)
+print("QoS configured successfully!")</code></pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
