@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 40 Linux Commands</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 p-6">
+    <div class="container mx-auto">
+        <h1 class="text-2xl font-bold mb-4">Top 40 Linux Commands with Practice Examples</h1>
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 font-semibold">Command</th>
+                    <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 font-semibold">Description</th>
+                    <th class="py-2 px-4 border-b-2 border-gray-200 bg-gray-100 font-semibold">Practice Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">ls</td>
+                    <td class="py-2 px-4 border-b border-gray-200">List directory contents</td>
+                    <td class="py-2 px-4 border-b border-gray-200">ls -l /home/user</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">cd</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Change directory</td>
+                    <td class="py-2 px-4 border-b border-gray-200">cd /var/log</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">pwd</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Print working directory</td>
+                    <td class="py-2 px-4 border-b border-gray-200">pwd</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">mkdir</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Create a new directory</td>
+                    <td class="py-2 px-4 border-b border-gray-200">mkdir new_folder</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">rmdir</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Remove an empty directory</td>
+                    <td class="py-2 px-4 border-b border-gray-200">rmdir old_folder</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">rm</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Remove files or directories</td>
+                    <td class="py-2 px-4 border-b border-gray-200">rm -rf unwanted_folder</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">cp</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Copy files or directories</td>
+                    <td class="py-2 px-4 border-b border-gray-200">cp file1.txt file2.txt</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">mv</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Move/rename files or directories</td>
+                    <td class="py-2 px-4 border-b border-gray-200">mv old_name.txt new_name.txt</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">touch</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Create an empty file</td>
+                    <td class="py-2 px-4 border-b border-gray-200">touch newfile.txt</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">cat</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Concatenate and display file content</td>
+                    <td class="py-2 px-4 border-b border-gray-200">cat file.txt</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">more</td>
+                    <td class="py-2 px-4 border-b border-gray-200">View file content with pagination</td>
+                    <td class="py-2 px-4 border-b border-gray-200">more file.txt</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">less</td>
+                    <td class="py-2 px-4 border-b border-gray-200">View file content with backward/forward navigation</td>
+                    <td class="py-2 px-4 border-b border-gray-200">less file.txt</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">head</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Output the first part of files</td>
+                    <td class="py-2 px-4 border-b border-gray-200">head -n 10 file.txt</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">tail</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Output the last part of files</td>
+                    <td class="py-2 px-4 border-b border-gray-200">tail -n 10 file.txt</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">grep</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Search for patterns in files</td>
+                    <td class="py-2 px-4 border-b border-gray-200">grep "search_term" file.txt</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">find</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Search for files in a directory hierarchy</td>
+                    <td class="py-2 px-4 border-b border-gray-200">find /home/user -name "*.txt"</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">chmod</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Change file permissions</td>
+                    <td class="py-2 px-4 border-b border-gray-200">chmod 755 script.sh</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">chown</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Change file owner and group</td>
+                    <td class="py-2 px-4 border-b border-gray-200">chown user:group file.txt</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">ps</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Display current processes</td>
+                    <td class="py-2 px-4 border-b border-gray-200">ps aux</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">top</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Display tasks and system resource usage</td>
+                    <td class="py-2 px-4 border-b border-gray-200">top</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">kill</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Terminate processes by PID</td>
+                    <td class="py-2 px-4 border-b border-gray-200">kill -9 1234</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">df</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Report file system disk space usage</td>
+                    <td class="py-2 px-4 border-b border-gray-200">df -h</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">du</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Estimate file space usage</td>
+                    <td class="py-2 px-4 border-b border-gray-200">du -sh /home/user</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">tar</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Archive files</td>
+                    <td class="py-2 px-4 border-b border-gray-200">tar -cvf archive.tar.gz /path/to/directory</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">gzip</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Compress files</td>
+                    <td class="py-2 px-4 border-b border-gray-200">gzip file.txt</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">gunzip</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Decompress files</td>
+                    <td class="py-2 px-4 border-b border-gray-200">gunzip file.txt.gz</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">ssh</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Securely connect to remote hosts</td>
+                    <td class="py-2 px-4 border-b border-gray-200">ssh user@remote_host</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">scp</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Securely copy files between hosts</td>
+                    <td class="py-2 px-4 border-b border-gray-200">scp file.txt user@remote_host:/path/to/destination</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">wget</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Retrieve files from the web</td>
+                    <td class="py-2 px-4 border-b border-gray-200">wget http://example.com/file.txt</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">curl</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Transfer data from or to a server</td>
+                    <td class="py-2 px-4 border-b border-gray-200">curl -O http://example.com/file.txt</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">man</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Display the manual for a command</td>
+                    <td class="py-2 px-4 border-b border-gray-200">man ls</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">echo</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Display a line of text</td>
+                    <td class="py-2 px-4 border-b border-gray-200">echo "Hello, World!"</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">alias</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Create command shortcuts</td>
+                    <td class="py-2 px-4 border-b border-gray-200">alias ll='ls -l'</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">unalias</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Remove command shortcuts</td>
+                    <td class="py-2 px-4 border-b border-gray-200">unalias ll</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">uname</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Print system information</td>
+                    <td class="py-2 px-4 border-b border-gray-200">uname -a</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">uptime</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Show how long the system has been running</td>
+                    <td class="py-2 px-4 border-b border-gray-200">uptime</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">history</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Show command history</td>
+                    <td class="py-2 px-4 border-b border-gray-200">history</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">ifconfig</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Configure network interfaces</td>
+                    <td class="py-2 px-4 border-b border-gray-200">ifconfig eth0</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">ping</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Send ICMP ECHO_REQUEST to network hosts</td>
+                    <td class="py-2 px-4 border-b border-gray-200">ping google.com</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">netstat</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Network statistics</td>
+                    <td class="py-2 px-4 border-b border-gray-200">netstat -tuln</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-200">iptables</td>
+                    <td class="py-2 px-4 border-b border-gray-200">Configure packet filtering rules</td>
+                    <td class="py-2 px-4 border-b border-gray-200">iptables -L</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
