@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ansible for Cisco Engineers: Lab Workbook</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8">Ansible for Cisco Engineers: Lab Workbook</h1>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 1: Introduction to Ansible</h2>
+            <p class="mb-4"><strong>Objective:</strong> Understand what Ansible is and how it works.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Install Ansible on a control node:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">sudo apt-get install ansible</code> (Debian/Ubuntu) or <code class="bg-gray-200 p-1 rounded">sudo yum install ansible</code> (CentOS/RHEL).</p>
+                    <p>Verify installation: <code class="bg-gray-200 p-1 rounded">ansible --version</code>.</p>
+                </li>
+                <li class="mb-2"><strong>Set up a simple inventory file:</strong>
+                    <p>Create a file named <code class="bg-gray-200 p-1 rounded">hosts</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">[cisco]
+192.168.1.1
+192.168.1.2</pre>
+                    <p>Test inventory: <code class="bg-gray-200 p-1 rounded">ansible -i hosts cisco -m ping</code>.</p>
+                </li>
+                <li class="mb-2"><strong>Run basic Ansible commands:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible -i hosts cisco -m ping</code>.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 2: Ansible Inventory and Configuration</h2>
+            <p class="mb-4"><strong>Objective:</strong> Learn about Ansible inventory and configuration files.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Create a detailed inventory file with groups:</strong>
+                    <p>File: <code class="bg-gray-200 p-1 rounded">hosts</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">[routers]
+router1 ansible_host=192.168.1.1
+router2 ansible_host=192.168.1.2
+
+[switches]
+switch1 ansible_host=192.168.1.3
+switch2 ansible_host=192.168.1.4</pre>
+                </li>
+                <li class="mb-2"><strong>Configure Ansible using the <code class="bg-gray-200 p-1 rounded">ansible.cfg</code> file:</strong>
+                    <p>Create <code class="bg-gray-200 p-1 rounded">ansible.cfg</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">[defaults]
+inventory = hosts</pre>
+                </li>
+                <li class="mb-2"><strong>Run Ansible commands using the inventory file:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible all -m ping</code>.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 3: Connecting to Cisco Devices</h2>
+            <p class="mb-4"><strong>Objective:</strong> Set up connections to Cisco devices using Ansible.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Set up SSH keys for authentication:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ssh-keygen -t rsa</code>.</p>
+                    <p>Copy key to devices: <code class="bg-gray-200 p-1 rounded">ssh-copy-id user@192.168.1.1</code>.</p>
+                </li>
+                <li class="mb-2"><strong>Configure Ansible to connect to Cisco devices:</strong>
+                    <p>Update <code class="bg-gray-200 p-1 rounded">hosts</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">[cisco:vars]
+ansible_user=user
+ansible_ssh_private_key_file=~/.ssh/id_rsa</pre>
+                </li>
+                <li class="mb-2"><strong>Verify connections using Ansible ping:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible cisco -m ping</code>.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 4: Running Basic Ansible Modules</h2>
+            <p class="mb-4"><strong>Objective:</strong> Use basic Ansible modules with Cisco devices.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Use the <code class="bg-gray-200 p-1 rounded">ios_command</code> module to run show commands:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">show_version.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Gather Cisco IOS version
+  hosts: cisco
+  tasks:
+    - name: Run show version
+      ios_command:
+        commands: show version</pre>
+                    <p>Run: <code class="bg-gray-200 p-1 rounded">ansible-playbook show_version.yml</code>.</p>
+                </li>
+                <li class="mb-2"><strong>Use the <code class="bg-gray-200 p-1 rounded">ios_config</code> module to configure interfaces:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">config_interface.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Configure Cisco Interface
+  hosts: cisco
+  tasks:
+    - name: Configure interface description
+      ios_config:
+        lines:
+          - description Configured by Ansible
+        parents: interface GigabitEthernet0/1</pre>
+                    <p>Run: <code class="bg-gray-200 p-1 rounded">ansible-playbook config_interface.yml</code>.</p>
+                </li>
+                <li class="mb-2"><strong>Save configurations on Cisco devices:</strong>
+                    <p>Add to playbook:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">    - name: Save configuration
+      ios_command:
+        commands: write memory</pre>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 5: Creating Playbooks</h2>
+            <p class="mb-4"><strong>Objective:</strong> Write and run simple Ansible playbooks.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Write a playbook to gather facts from Cisco devices:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">gather_facts.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Gather facts from Cisco devices
+  hosts: cisco
+  tasks:
+    - name: Gather facts
+      ios_facts:</pre>
+                </li>
+                <li class="mb-2"><strong>Write a playbook to configure VLANs:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">config_vlan.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Configure VLAN on Cisco switch
+  hosts: cisco
+  tasks:
+    - name: Create VLAN
+      ios_config:
+        lines:
+          - vlan 10
+          - name Ansible_VLAN</pre>
+                </li>
+                <li class="mb-2"><strong>Run the playbooks and verify the results:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible-playbook gather_facts.yml</code>.</p>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible-playbook config_vlan.yml</code>.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 6: Using Variables and Templates</h2>
+            <p class="mb-4"><strong>Objective:</strong> Use variables and Jinja2 templates in Ansible playbooks.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Create a playbook using variables:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">variables.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Use variables in playbook
+  hosts: cisco
+  vars:
+    interface: GigabitEthernet0/1
+    description: Configured by Ansible
+  tasks:
+    - name: Configure interface
+      ios_config:
+        lines:
+          - description "{{ description }}"
+        parents: interface "{{ interface }}"</pre>
+                </li>
+                <li class="mb-2"><strong>Use a Jinja2 template to configure a Cisco device:</strong>
+                    <p>Template: <code class="bg-gray-200 p-1 rounded">interface_template.j2</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">interface {{ interface }}
+  description {{ description }}</pre>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">template.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Use template in playbook
+  hosts: cisco
+  vars:
+    interface: GigabitEthernet0/1
+    description: Configured by Ansible Template
+  tasks:
+    - name: Configure interface using template
+      ios_config:
+        src: interface_template.j2</pre>
+                </li>
+                <li class="mb-2"><strong>Deploy the configuration using Ansible:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible-playbook template.yml</code>.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 7: Loops and Conditionals</h2>
+            <p class="mb-4"><strong>Objective:</strong> Implement loops and conditionals in playbooks.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Write a playbook using loops to configure multiple interfaces:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">loops.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Use loops in playbook
+  hosts: cisco
+  vars:
+    interfaces:
+      - GigabitEthernet0/1
+      - GigabitEthernet0/2
+  tasks:
+    - name: Configure multiple interfaces
+      ios_config:
+        lines:
+          - description Configured by Ansible
+        parents: interface "{{ item }}"
+      loop: "{{ interfaces }}"</pre>
+                </li>
+                <li class="mb-2"><strong>Use conditionals to apply configurations based on device facts:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">conditionals.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Use conditionals in playbook
+  hosts: cisco
+  tasks:
+    - name: Gather facts
+      ios_facts:
+    - name: Configure based on model
+      ios_config:
+        lines:
+          - banner motd ^C Authorized Access Only ^C
+      when: ansible_net_model == "CSR1000V"</pre>
+                </li>
+                <li class="mb-2"><strong>Run and verify the playbook:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible-playbook loops.yml</code>.</p>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible-playbook conditionals.yml</code>.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 8: Roles and Reusability</h2>
+            <p class="mb-4"><strong>Objective:</strong> Organize playbooks using roles for better reusability.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Create a role for common tasks:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible-galaxy init common_tasks</code>.</p>
+                    <p>Directory structure:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">common_tasks/
+├── tasks
+│   └── main.yml
+├── templates
+├── handlers
+├── vars
+├── defaults
+├── meta
+└── files</pre>
+                </li>
+                <li class="mb-2"><strong>Use the role in multiple playbooks:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">main_playbook.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Use role in playbook
+  hosts: cisco
+  roles:
+    - common_tasks</pre>
+                </li>
+                <li class="mb-2"><strong>Share and import roles from Ansible Galaxy:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible-galaxy install username.role_name</code>.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 9: Ansible Vault</h2>
+            <p class="mb-4"><strong>Objective:</strong> Secure sensitive data using Ansible Vault.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Encrypt sensitive data using Ansible Vault:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible-vault encrypt vars.yml</code>.</p>
+                </li>
+                <li class="mb-2"><strong>Use the encrypted data in playbooks:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">vault_playbook.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Use encrypted data in playbook
+  hosts: cisco
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: Print encrypted variable
+      debug:
+        msg: "{{ secret_password }}"</pre>
+                </li>
+                <li class="mb-2"><strong>Decrypt and update the data securely:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible-vault decrypt vars.yml</code>.</p>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible-vault edit vars.yml</code>.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 10: Error Handling and Debugging</h2>
+            <p class="mb-4"><strong>Objective:</strong> Handle errors and debug playbooks.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Use error handling techniques in playbooks:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">error_handling.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Error handling in playbook
+  hosts: cisco
+  tasks:
+    - name: Run command with error handling
+      ios_command:
+        commands: wrong command
+      ignore_errors: yes</pre>
+                </li>
+                <li class="mb-2"><strong>Implement debug tasks to troubleshoot issues:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">debug_playbook.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Debugging in playbook
+  hosts: cisco
+  tasks:
+    - name: Print debug message
+      debug:
+        msg: "This is a debug message"</pre>
+                </li>
+                <li class="mb-2"><strong>Run playbooks with verbose output:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible-playbook playbook.yml -vvv</code>.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 11: Configuring SNMP</h2>
+            <p class="mb-4"><strong>Objective:</strong> Configure SNMP on Cisco devices using Ansible.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Write a playbook to configure SNMP:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">snmp.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Configure SNMP
+  hosts: cisco
+  tasks:
+    - name: Configure SNMP community
+      ios_config:
+        lines:
+          - snmp-server community public RO</pre>
+                </li>
+                <li class="mb-2"><strong>Verify SNMP configuration using show commands:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible cisco -m ios_command -a "commands='show run | include snmp'"</code>.</p>
+                </li>
+                <li class="mb-2"><strong>Test SNMP connectivity:</strong>
+                    <p>Use an SNMP client tool to verify connectivity.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 12: Managing ACLs</h2>
+            <p class="mb-4"><strong>Objective:</strong> Manage Access Control Lists (ACLs) using Ansible.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Write a playbook to create and apply ACLs:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">acl.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Manage ACLs
+  hosts: cisco
+  tasks:
+    - name: Create ACL
+      ios_config:
+        lines:
+          - ip access-list extended ANSIBLE_ACL
+          - permit ip any any</pre>
+                </li>
+                <li class="mb-2"><strong>Verify ACL configuration:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible cisco -m ios_command -a "commands='show access-lists'"</code>.</p>
+                </li>
+                <li class="mb-2"><strong>Update ACLs dynamically:</strong>
+                    <p>Modify playbook to include additional rules.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 13: Backing Up Configurations</h2>
+            <p class="mb-4"><strong>Objective:</strong> Automate configuration backups using Ansible.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Write a playbook to back up configurations:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">backup.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Backup configurations
+  hosts: cisco
+  tasks:
+    - name: Run show running-config
+      ios_command:
+        commands: show running-config
+      register: config
+
+    - name: Save configuration to file
+      copy:
+        content: "{{ config.stdout }}"
+        dest: "backups/{{ inventory_hostname }}.cfg"</pre>
+                </li>
+                <li class="mb-2"><strong>Schedule regular backups:</strong>
+                    <p>Use cron jobs or Ansible Tower to schedule playbook execution.</p>
+                </li>
+                <li class="mb-2"><strong>Verify backup files:</strong>
+                    <p>Check the <code class="bg-gray-200 p-1 rounded">backups</code> directory for configuration files.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 14: Implementing NTP</h2>
+            <p class="mb-4"><strong>Objective:</strong> Configure Network Time Protocol (NTP) using Ansible.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Write a playbook to configure NTP servers:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">ntp.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Configure NTP
+  hosts: cisco
+  tasks:
+    - name: Configure NTP server
+      ios_config:
+        lines:
+          - ntp server 192.168.1.1</pre>
+                </li>
+                <li class="mb-2"><strong>Verify NTP configuration:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible cisco -m ios_command -a "commands='show ntp status'"</code>.</p>
+                </li>
+                <li class="mb-2"><strong>Ensure time synchronization across devices:</strong>
+                    <p>Verify that all devices show the correct time.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 15: Deploying IOS Upgrades</h2>
+            <p class="mb-4"><strong>Objective:</strong> Automate IOS upgrades using Ansible.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Write a playbook to upload and install IOS images:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">ios_upgrade.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Upgrade IOS
+  hosts: cisco
+  tasks:
+    - name: Upload IOS image
+      ios_command:
+        commands: copy tftp: flash:
+        prompt: "Address or name of remote host"
+        answer: "192.168.1.100"
+    - name: Install IOS image
+      ios_command:
+        commands: boot system flash:/new_image.bin</pre>
+                </li>
+                <li class="mb-2"><strong>Schedule device reboots:</strong>
+                    <p>Add reboot task to playbook:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">    - name: Reboot device
+      ios_command:
+        commands: reload</pre>
+                </li>
+                <li class="mb-2"><strong>Verify IOS version after upgrade:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible cisco -m ios_command -a "commands='show version'"</code>.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 16: Configuring BGP</h2>
+            <p class="mb-4"><strong>Objective:</strong> Configure Border Gateway Protocol (BGP) using Ansible.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Write a playbook to configure BGP neighbors:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">bgp.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Configure BGP
+  hosts: cisco
+  tasks:
+    - name: Configure BGP neighbor
+      ios_config:
+        lines:
+          - router bgp 65000
+          - neighbor 192.168.1.2 remote-as 65001</pre>
+                </li>
+                <li class="mb-2"><strong>Verify BGP peering and routes:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible cisco -m ios_command -a "commands='show ip bgp summary'"</code>.</p>
+                </li>
+                <li class="mb-2"><strong>Troubleshoot BGP issues:</strong>
+                    <p>Use additional show commands to diagnose problems.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 17: Managing VLANs</h2>
+            <p class="mb-4"><strong>Objective:</strong> Automate VLAN management using Ansible.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Write a playbook to create, modify, and delete VLANs:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">vlan.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Manage VLANs
+  hosts: cisco
+  tasks:
+    - name: Create VLAN
+      ios_config:
+        lines:
+          - vlan 10
+          - name Ansible_VLAN
+    - name: Delete VLAN
+      ios_config:
+        lines:
+          - no vlan 10</pre>
+                </li>
+                <li class="mb-2"><strong>Assign VLANs to interfaces:</strong>
+                    <p>Playbook:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">    - name: Assign VLAN to interface
+      ios_config:
+        lines:
+          - switchport mode access
+          - switchport access vlan 10
+        parents: interface GigabitEthernet0/1</pre>
+                </li>
+                <li class="mb-2"><strong>Verify VLAN configuration:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible cisco -m ios_command -a "commands='show vlan brief'"</code>.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 18: Configuring HSRP</h2>
+            <p class="mb-4"><strong>Objective:</strong> Configure Hot Standby Router Protocol (HSRP) using Ansible.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Write a playbook to configure HSRP on routers:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">hsrp.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Configure HSRP
+  hosts: cisco
+  tasks:
+    - name: Configure HSRP on interface
+      ios_config:
+        lines:
+          - standby 1 ip 192.168.1.254
+          - standby 1 priority 110
+        parents: interface GigabitEthernet0/1</pre>
+                </li>
+                <li class="mb-2"><strong>Verify HSRP status and failover:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible cisco -m ios_command -a "commands='show standby brief'"</code>.</p>
+                </li>
+                <li class="mb-2"><strong>Troubleshoot HSRP issues:</strong>
+                    <p>Use additional show commands to diagnose problems.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 19: Monitoring and Logging</h2>
+            <p class="mb-4"><strong>Objective:</strong> Set up monitoring and logging using Ansible.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Write a playbook to configure syslog servers:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">syslog.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Configure syslog
+  hosts: cisco
+  tasks:
+    - name: Configure syslog server
+      ios_config:
+        lines:
+          - logging host 192.168.1.100</pre>
+                </li>
+                <li class="mb-2"><strong>Set up SNMP traps for monitoring:</strong>
+                    <p>Playbook: <code class="bg-gray-200 p-1 rounded">snmp_traps.yml</code>:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">- name: Configure SNMP traps
+  hosts: cisco
+  tasks:
+    - name: Configure SNMP trap server
+      ios_config:
+        lines:
+          - snmp-server enable traps
+          - snmp-server host 192.168.1.100 traps version 2c public</pre>
+                </li>
+                <li class="mb-2"><strong>Verify logging and monitoring configuration:</strong>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible cisco -m ios_command -a "commands='show logging'"</code>.</p>
+                    <p>Command: <code class="bg-gray-200 p-1 rounded">ansible cisco -m ios_command -a "commands='show snmp'"</code>.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-semibold mb-4">Lab 20: Integrating with CI/CD Pipelines</h2>
+            <p class="mb-4"><strong>Objective:</strong> Integrate Ansible playbooks with CI/CD pipelines.</p>
+            <ul class="list-disc list-inside">
+                <li class="mb-2"><strong>Set up a CI/CD pipeline using tools like Jenkins:</strong>
+                    <p>Install Jenkins and configure a new pipeline job.</p>
+                    <p>Configure SCM (Git) and build triggers.</p>
+                </li>
+                <li class="mb-2"><strong>Automate playbook execution through the pipeline:</strong>
+                    <p>Jenkinsfile example:</p>
+                    <pre class="bg-gray-200 p-4 rounded text-gray-800">pipeline {
+  agent any
+  stages {
+    stage('Clone Repository') {
+      steps {
+        git 'https://github.com/your-repo.git'
+      }
+    }
+    stage('Run Ansible Playbook') {
+      steps {
+        sh 'ansible-playbook playbook.yml'
+      }
+    }
+  }
+}</pre>
+                </li>
+                <li class="mb-2"><strong>Verify the integration and results:</strong>
+                    <p>Check Jenkins build logs and Ansible execution results.</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</body>
+</html>
